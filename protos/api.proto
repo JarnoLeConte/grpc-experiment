@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package api;
+
+
+service API {
+  rpc getConsumers (Empty) returns (ConsumersResult) {}
+  rpc getConsumer (ConsumerId) returns (ConsumerResult) {}
+  rpc updateConsumer (Consumer) returns (ConsumerResult) {}
+  rpc createConsumer (Consumer) returns (ConsumerResult) {}
+  rpc removeConsumer (ConsumerId) returns (Empty) {}
+}
+
+message Empty {}
+
+message ConsumerId {
+  uint32 id = 1;
+}
+
+message Consumer {
+  enum Type {
+    PERSON = 0;
+    COMPANY = 1;
+  }
+  uint32 id = 1;
+  string name = 2;
+  Type type = 3;
+}
+
+message ConsumersResult {
+  repeated Consumer result = 1;
+}
+
+message ConsumerResult {
+  Consumer result = 1;
+}

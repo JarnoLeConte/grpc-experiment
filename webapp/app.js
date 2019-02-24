@@ -1,23 +1,11 @@
 const promisifyAll = require('util-promisifyall');
 const grpc = require('grpc');
-const protoLoader = require('@grpc/proto-loader');
+const protos = require('@jarnoleconte/grpc-experiment-protos');
 
-const protoFile = '../protos/api.proto';
-
-const protoOptions = {
-  keepCase: false,
-  longs: String,
-  enums: Number,
-  defaults: false,
-  oneofs: false,
-  arrays: true,
-};
-
-const packageDefinition = protoLoader.loadSync(protoFile, protoOptions);
+const packageDefinition = protos.loadSync('api.proto');
 const { Api } = grpc.loadPackageDefinition(packageDefinition).api;
 
 const api = new Api('localhost:50051', grpc.credentials.createInsecure());
-
 promisifyAll(api);
 
 

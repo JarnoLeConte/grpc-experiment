@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@grpc/proto-loader": "^0.4.0",
+    "@jarnoleconte/grpc-experiment-protos": "git+ssh://git@github.com/jarnoleconte/grpc-experiment-protos.git",
     "grpc": "^1.18.0"
   },
   "devDependencies": {

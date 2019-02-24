@@ -55,7 +55,7 @@ async function demo() {
     console.log('done');
   });
   let i = 0;
-  for (; i < 30000; i += 1) {
+  for (; i < 1000000; i += 1) {
     call.write({
       width: 720,
       height: 360,
@@ -63,6 +63,7 @@ async function demo() {
       lon: Math.random() * 360 - 180,
     });
   }
+  call.end();
 }
 
 demo()

@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package api;
 
-import public "consumer.proto";
-import public "location.proto";
+import "api/consumer.proto";
+import "api/location.proto";
 
 
 service Api {

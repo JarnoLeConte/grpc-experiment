@@ -2,35 +2,22 @@ syntax = "proto3";
 
 package api;
 
+import public "consumer.proto";
+import public "location.proto";
 
-service API {
-  rpc getConsumers (Empty) returns (ConsumersResult) {}
-  rpc getConsumer (ConsumerId) returns (ConsumerResult) {}
-  rpc updateConsumer (Consumer) returns (ConsumerResult) {}
-  rpc createConsumer (Consumer) returns (ConsumerResult) {}
-  rpc removeConsumer (ConsumerId) returns (Empty) {}
-}
 
-message Empty {}
+service Api {
+  /* Consumer */
+  rpc CreateConsumer (api.consumer.CreateRequest) returns (api.consumer.CreateResponse) {}
+  rpc ReadConsumer (api.consumer.ReadRequest) returns (api.consumer.ReadResponse) {}
+  rpc UpdateConsumer (api.consumer.UpdateRequest) returns (api.consumer.UpdateResponse) {}
+  rpc DeleteConsumer (api.consumer.DeleteRequest) returns (api.consumer.DeleteResponse) {}
+  rpc ListConsumer (api.consumer.ListRequest) returns (api.consumer.ListResponse) {}
 
-message ConsumerId {
-  uint32 id = 1;
-}
-
-message Consumer {
-  enum Type {
-    PERSON = 0;
-    COMPANY = 1;
-  }
-  uint32 id = 1;
-  string name = 2;
-  Type type = 3;
-}
-
-message ConsumersResult {
-  repeated Consumer result = 1;
-}
-
-message ConsumerResult {
-  Consumer result = 1;
+  /* Location */
+  rpc CreateLocation (api.location.CreateRequest) returns (api.location.CreateResponse) {}
+  rpc ReadLocation (api.location.ReadRequest) returns (api.location.ReadResponse) {}
+  rpc UpdateLocation (api.location.UpdateRequest) returns (api.location.UpdateResponse) {}
+  rpc DeleteLocation (api.location.DeleteRequest) returns (api.location.DeleteResponse) {}
+  rpc ListLocation (api.location.ListRequest) returns (api.location.ListResponse) {}
 }

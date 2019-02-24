@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package api.location;
+
+
+/* Location Object */
+
+message Location {
+  uint32 id = 1;
+  uint32 lat = 2;
+  uint32 lon = 3;
+}
+
+/* Create */
+
+message CreateRequest {
+  Location location = 1;
+}
+
+message CreateResponse {
+  oneof type {
+    Result result = 1;
+    Error error = 2;
+  }
+  message Result {
+    uint32 id = 1;
+  }
+  enum Error {
+    ERROR_ACTION_FAILED = 0;
+  }
+}
+
+/* Read */
+
+message ReadRequest {
+  uint32 id = 1;
+}
+
+message ReadResponse {
+  oneof type {
+    Result result = 1;
+    Error error = 2;
+  }
+  message Result {
+    Location location = 1;
+  }
+  enum Error {
+    ERROR_ACTION_FAILED = 0;
+    ERROR_NOT_FOUND = 1;
+  }
+}
+
+/* Update */
+
+message UpdateRequest {
+  Location location = 1;
+}
+
+message UpdateResponse {
+  oneof type {
+    Result result = 1;
+    Error error = 2;
+  }
+  message Result {
+    /* empty */
+  }
+  enum Error {
+    ERROR_ACTION_FAILED = 0;
+  }
+}
+
+/* Delete */
+
+message DeleteRequest {
+  uint32 id = 1;
+}
+
+message DeleteResponse {
+  oneof type {
+    Result result = 1;
+    Error error = 2;
+  }
+  message Result {
+    /* empty */
+  }
+  enum Error {
+    ERROR_ACTION_FAILED = 0;
+  }
+}
+
+/* List */
+
+message ListRequest {
+  /* empty */
+}
+
+message ListResponse {
+  oneof type {
+    Result result = 1;
+    Error error = 2;
+  }
+  message Result {
+    repeated Location locations = 1;
+  }
+  enum Error {
+    ERROR_ACTION_FAILED = 0;
+  }
+}
+
+

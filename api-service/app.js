@@ -13,7 +13,7 @@ const locations = [];
 
 /* Simple CRUD operations */
 
-const Consumer = {
+const Consumer = callbackifyAll({
   async createConsumer({ request: { consumer } }) {
     const id = Math.max(0, ...consumers.map(c => c.id)) + 1;
     consumers.push({ ...consumer, id });
@@ -37,9 +37,9 @@ const Consumer = {
   async listConsumer() {
     return { result: { consumers } };
   },
-};
+});
 
-const Location = {
+const Location = callbackifyAll({
   async createLocation({ request: { location } }) {
     const id = Math.max(0, ...locations.map(c => c.id)) + 1;
     locations.push({ ...location, id });
@@ -63,16 +63,28 @@ const Location = {
   async listLocation() {
     return { result: { locations } };
   },
+});
+
+// Non-promisified function
+Location.reshapeLocation = (call) => {
+  call.on('data', (data) => {
+    call.write({
+      x: (data.width / 360) * (180 + data.lon),
+      y: (data.height / 180) * (90 - data.lat),
+    });
+  });
+  call.on('end', call.end);
 };
+
 
 /* Setup gRPC server */
 
 const server = new grpc.Server();
 
-server.addService(Api.service, callbackifyAll({
+server.addService(Api.service, {
   ...Consumer,
   ...Location,
-}));
+});
 
 server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
 server.start();

@@ -35,16 +35,34 @@ async function demo() {
   await api.listConsumerAsync({}).then(log);
 
   console.log('Manage locations...');
-  await api.createLocationAsync({ location: { lat: 5, lon: 32 } }).then(log);
+  await api.createLocationAsync({ location: { lat: 5.0, lon: 32.0 } }).then(log);
   await api.listLocationAsync({}).then(log);
-  await api.createLocationAsync({ location: { lat: 7 } }).then(log);
+  await api.createLocationAsync({ location: { lat: 7.0 } }).then(log);
   await api.listLocationAsync({}).then(log);
   await api.readLocationAsync({ id: 2 }).then(log);
   await api.readLocationAsync({ id: 20 }).then(log); // Not Exist
-  await api.updateLocationAsync({ location: { id: 2, lon: 7 } }).then(log);
+  await api.updateLocationAsync({ location: { id: 2, lon: 7.0 } }).then(log);
   await api.readLocationAsync({ id: 2 }).then(log);
   await api.deleteLocationAsync({ id: 2 }).then(log);
   await api.listLocationAsync({}).then(log);
+
+  console.log('Reshaping locations to fit on image; process as stream...');
+  const call = api.reshapeLocation();
+  call.on('data', (result) => {
+    console.log('result', result);
+  });
+  call.on('end', () => {
+    console.log('done');
+  });
+  let i = 0;
+  for (; i < 30000; i += 1) {
+    call.write({
+      width: 720,
+      height: 360,
+      lat: Math.random() * 180 - 90,
+      lon: Math.random() * 360 - 180,
+    });
+  }
 }
 
 demo()
